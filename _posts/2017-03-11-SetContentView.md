@@ -7,8 +7,8 @@ tag: Android源码
 在Activity和FragmentActivity中都会用到setContentView(R.layout.activity_main);
 进入SetContentView方法可以看到：
 <pre><code>
-	/**
-	 * 从布局资源中设置activity内容。资源被加载，然后添加所有顶级views到activity中。
+/**
+* 从布局资源中设置activity内容。资源被加载，然后添加所有顶级views到activity中。
      *
      * @param layoutResID Resource ID to be inflated.
      *
@@ -51,7 +51,9 @@ public PhoneWindow(Context context, Window preservedWindow) {
         mSupportsPictureInPicture = forceResizable || context.getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_PICTURE_IN_PICTURE);
     }</code></pre>
+    
 通过PhoneWindow构造方法可以发现：PhoneWindow(Context context, Window preservedWindow)是acitivity的主窗口构造方法。在mDecor = (DecorView) preservedWindow.getDecorView(),可以看到getDecor实现的是installDecor();
+
 <pre><code>@Override
     public final View getDecorView() {
         if (mDecor == null || mForceDecorInstall) {
@@ -59,7 +61,9 @@ public PhoneWindow(Context context, Window preservedWindow) {
         }
         return mDecor;
     }</code></pre>
-    在installDecor()中，<pre><code>mForceDecorInstall = false;
+    
+在installDecor()中，
+<pre><code>mForceDecorInstall = false;
         if (mDecor == null) {
             mDecor = generateDecor(-1);
             mDecor.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
@@ -91,11 +95,16 @@ public PhoneWindow(Context context, Window preservedWindow) {
         }
         return new DecorView(context, featureId, this, getAttributes());
     }</pre>
-    继续向下看,mContentParent = generateLayout(mDecor);
+ 
+    
+    
+继续向下看,mContentParent = generateLayout(mDecor);
+
  <pre><code></code>if (mContentParent == null) {
             mContentParent = generateLayout(mDecor);
             ....
-            </pre>
+            </code></pre>
+            
 查看 generateLayout(mDecor)方法：根据window特点的不同，加载不同的布局，发现所有布局中都有一个id为content的FrameLayout。最终返回的是一个id为content的FrameLayout。
 <pre><code> protected ViewGroup generateLayout(DecorView decor) {
    	....获取并设置窗口参数
