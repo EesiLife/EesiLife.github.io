@@ -38,11 +38,11 @@ res资源放在工程根目录res子目录下，它里面保存的文件大多�
 
 我们接下来再看应用程序资源的组织。应用程序资源的组织方式有18个维度，如图1所示：
 <div align="center">
-	<img src="/images/posts/Android apk打包过程/应用程序资源的匹配算法.png" height="300" width="500">  
+	<img src="/images/posts/Android apk打包过程/应用程序资源的组织方式.png" height="536" width="572">  
 </div>
 这里有一点需要说明的是，表格中的18个维度是按照优先级从最大到小排列的，这个优先级次序可以帮助系统根据机器的本地配置来在应用程序资源目录中找到最合适的资源来使用。
 <div align="center">
-	<img src="/images/posts/Android apk打包过程/应用程序资源的匹配算法.png" height="300" width="500">  
+	<img src="/images/posts/Android apk打包过程/应用程序资源的匹配算法.png" height="461" width="361">  
 </div>
   注意，图2的算法流程图是来自于官方文档的，它的详细描述可以参考：http://developer.android.com/guide/topics/resources/providing-resources.html#BestMatch。我们同样是通过上述官方文档中的例子来说明上述应用程序资源匹配算法的执行过程。
    假设一个应用程序的drawable资源按照以下方式来组织：
@@ -95,7 +95,7 @@ Step 5.  继续执行Step 2、Step 3和Step 4，直到找到一个最匹配的�
 
 应用程序资源的编译、打包以及查找过程
 <div align="center">
-	<img src="/images/posts/Android apk打包过程/应用程序资源的编译、打包以及查找过程.jpg" height="300" width="500">  
+	<img src="/images/posts/Android apk打包过程/应用程序资源的编译、打包以及查找过程.jpg" height="562" width="580">  
 </div>
 通过图3可以发现：
 1.除了assets和res/raw资源被原封不动地打包进apk之外，其他资源都会被编译或者处理。
@@ -106,7 +106,7 @@ Step 5.  继续执行Step 2、Step 3和Step 4，直到找到一个最匹配的�
 
 ###Android资源打包工具的执行过程(应用程序资源的编译和打包过程)
 <div align="center">
-	<img src="/images/posts/Android apk打包过程/应用程序资源的编译、打包以及查找过程.jpg" height="300" width="500">  
+	<img src="/images/posts/Android apk打包过程/Android资源打包工具的执行过程.jpg" height="628" width="426">  
 </div>
 
 ```java
@@ -195,7 +195,7 @@ private:
     ```
 Xml资源文件main.xml的编译过程如图8所示：
  <div align="center">
-	<img src="/images/posts/Android apk打包过程/Xml资源文件的编译过程.jpg" height="300" width="500">  
+	<img src="/images/posts/Android apk打包过程/Xml资源文件的编译过程.jpg" height="350" width="350">  
 </div>
   1. 解析Xml文件
   每一个XMLNode都表示一个Xml元素，其中：
@@ -225,7 +225,7 @@ Xml资源文件main.xml的编译过程如图8所示：
  九. 生成资源索引表
  经过上述八个操作之后，所获得的资源列表
  <div align="center">
-	<img src="/images/posts/Android apk打包过程/收集到的所有资源项.jpg" height="300" width="500">  
+	<img src="/images/posts/Android apk打包过程/收集到的所有资源项.jpg" height="295" width="621">  
 </div>
  有了这些资源项之后，Android资源打包工具aapt就可以生成资源索引表resources.arsc了
  
