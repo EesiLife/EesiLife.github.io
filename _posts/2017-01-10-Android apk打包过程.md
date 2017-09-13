@@ -38,7 +38,7 @@ res资源放在工程根目录res子目录下，它里面保存的文件大多�
 
 我们接下来再看应用程序资源的组织。应用程序资源的组织方式有18个维度，如图1所示：
 <div align="center">
-	<img src="/images/posts/Android apk打包过程/应用程序资源的组织方式.png" height="536" width="572">  
+	<img src="/images/posts/Android apk打包过程/应用程序资源的组织方式.jng" height="536" width="572">  
 </div>
 这里有一点需要说明的是，表格中的18个维度是按照优先级从最大到小排列的，这个优先级次序可以帮助系统根据机器的本地配置来在应用程序资源目录中找到最合适的资源来使用。
 <div align="center">
@@ -194,9 +194,11 @@ private:
     </LinearLayout>  
     ```
 Xml资源文件main.xml的编译过程如图8所示：
+
  <div align="center">
 	<img src="/images/posts/Android apk打包过程/Xml资源文件的编译过程.jpg" height="350" width="350">  
 </div>
+
   1. 解析Xml文件
   每一个XMLNode都表示一个Xml元素，其中：
 
@@ -224,9 +226,11 @@ Xml资源文件main.xml的编译过程如图8所示：
         
  九. 生成资源索引表
  经过上述八个操作之后，所获得的资源列表
+ 
  <div align="center">
 	<img src="/images/posts/Android apk打包过程/收集到的所有资源项.jpg" height="295" width="621">  
 </div>
+
  有了这些资源项之后，Android资源打包工具aapt就可以生成资源索引表resources.arsc了
  
   十. 编译AndroidManifest.xml文件
