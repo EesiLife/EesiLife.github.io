@@ -140,15 +140,15 @@ project
 
   在编译应用程序资源之前，Android资源打包工具aapt会创建一个AaptAssets对象，用来收集当前需要编译的资源文件。这些需要编译的资源文件就保存在AaptAssets类的成员变量mRes中，如下所示：
   ```java
-  class AaptAssets : public AaptDir  
-{  
-    ......  
-  
-private:  
-    ......  
-  
-    KeyedVector<String8, sp<ResourceTypeSet> >* mRes;  
-}; 
+  class AaptAssets : public AaptDir
+{
+    ......
+
+private:
+    ......
+
+    KeyedVector<String8, sp<ResourceTypeSet> >* mRes;
+};
 ```
  AaptAssets类定义在文件frameworks/base/tools/aapt/AaptAssets.h中。
 
@@ -175,32 +175,33 @@ private:
 前面的六步操作为编译Xml资源文件准备好了所有的素材，因此，现在就开始要编译Xml资源文件了。除了values类型的资源文件，其它所有的Xml资源文件都需要编译。
 这里我们只挑layout类型的资源文件来说明Xml资源文件的编译过程，也就是这篇文章中要用到的例子中的main.xml文件，它的内容如下所示：
 ```java
-    <?xml version="1.0" encoding="utf-8"?>  
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-        android:orientation="vertical"  
-        android:layout_width="fill_parent"  
-        android:layout_height="fill_parent"   
-        android:gravity="center">  
-        <Button   
-            android:id="@+id/button_start_in_process"  
-            android:layout_width="wrap_content"  
-            android:layout_height="wrap_content"  
-            android:gravity="center"  
-            android:text="@string/start_in_process" >  
-        </Button>  
-        <Button   
-            android:id="@+id/button_start_in_new_process"  
-            android:layout_width="wrap_content"  
-            android:layout_height="wrap_content"  
-            android:gravity="center"  
-            android:text="@string/start_in_new_process" >  
-        </Button>  
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center">
+        <Button
+            android:id="@+id/button_start_in_process"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/start_in_process" >
+        </Button>
+        <Button
+            android:id="@+id/button_start_in_new_process"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/start_in_new_process" >
+        </Button>
     </LinearLayout>
 ```
+
 Xml资源文件main.xml的编译过程如图8所示：
 
  <div align="center">
-	<img src="/images/posts/Android apk打包过程/Xml资源文件的编译过程.jpg" height="350" width="350">  
+	<img src="/images/posts/Android apk打包过程/Xml资源文件的编译过程.jpg" height="350" width="350">
 </div>
 
   1. 解析Xml文件
@@ -215,7 +216,7 @@ Xml资源文件main.xml的编译过程如图8所示：
         --mChildren，表示Xml元素的子元素。
 
   Xml文件解析完成之后，就可以得到一个用来描述根节点的XMLNode，接下来就可以通过这个根节点来完成其它的编译操作。
-  
+
   2. 赋予属性名称资源ID
   这一步实际上就是给每一个Xml元素的属性名称都赋予资源ID。例如，对于main.xml文件的根节点LinearLayout来说，就是要分别给它的属性名称“android:orientation”、“android:layout_width”、“android:layout_height”和“android:gravity”赋予一个资源ID。注意，上述这些属性都是在系统资源包里面定义的，因此，Android资源打包工具首先是要在系统资源包里面找到这些名称所对应的资源ID，然后才能赋给main.xml文件的根节点LinearLayout。
   3. 解析属性值
@@ -227,21 +228,21 @@ Xml资源文件main.xml的编译过程如图8所示：
    这里生成资源符号为后面生成R.java文件做好准备的。从前面的操作可以知道，所有收集到的资源项都按照类型来保存在一个资源表中，即保存在一个ResourceTable对象。因此，Android资源打包工具aapt只要遍历每一个Package里面的每一个Type，然后取出每一个Entry的名称，并且根据这个Entry在自己的Type里面出现的次序来计算得到它的资源ID，那么就可以生成一个资源符号了，这个资源符号由名称以及资源ID所组成。
 
         例如，对于strings.xml文件中名称为“start_in_process”的Entry来说，它是一个类型为string的资源项，假设它出现的次序为第3，那么它的资源符号就等于R.string.start_in_process，对应的资源ID就为0x7f050002，其中，高字节0x7f表示Package ID，次高字节0x05表示string的Type ID，而低两字节0x02就表示“start_in_process”是第三个出现的字符串。
-        
+
  九. 生成资源索引表
  经过上述八个操作之后，所获得的资源列表
- 
+
  <div align="center">
 	<img src="/images/posts/Android apk打包过程/收集到的所有资源项.jpg" height="295" width="621">  
 </div>
 
  有了这些资源项之后，Android资源打包工具aapt就可以生成资源索引表resources.arsc了
- 
+
   十. 编译AndroidManifest.xml文件
     经过前面的九个步骤之后，应用程序的所有资源项就编译完成了，这时候就开始将应用程序的配置文件AndroidManifest.xml也编译成二进制格式的Xml文件。之所以要在应用程序的所有资源项都编译完成之后，再编译应用程序的配置文件，是因为后者可能会引用到前者。
 
         应用程序配置文件AndroidManifest.xml的编译过程与其它的Xml资源文件的编译过程是一样的，可以参考前面的第七步。注意，应用程序配置文件AndroidManifest.xml编译完成之后，Android资源打包工具appt还会验证它的完整性和正确性，例如，验证AndroidManifest.xml的根节点mainfest必须定义有android:package属性。
-        
+
 十一. 生成R.java文件
   在前面的第八步中，我们已经将所有的资源项及其所对应的资源ID都收集起来了，因此，这里只要将直接将它们写入到指定的R.java文件去就可以了。
    注意，每一个资源类型在R.java文件中，都有一个对应的内部类，例如，类型为layout的资源项在R.java文件中对应的内部类为layout，而类型为string的资源项在R.java文件中对应的内部类就为string。
@@ -266,7 +267,7 @@ Xml资源文件main.xml的编译过程如图8所示：
         4. 资源项索引表resources.arsc的二进制格式。
 
    在一个apk文件中，除了代码文件之外，还有资源文件。资源文件时通过安卓资源打包工具aapt（Android Asset Package Tool）打包到APK文件中的。在打包前，大部分文本格式的XML资源文件还会被编译成二进制格式的xml资源文件。
-   
+
 ##应用程序资源的编译和打包过程
 第一步：打包资源文件，生成R.java文件
 
