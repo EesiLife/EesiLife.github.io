@@ -37,13 +37,17 @@ res资源放在工程根目录res子目录下，它里面保存的文件大多�
 另外，每一个res资源在编译的打包完成之后，都会被分配一个资源ID，这些资源ID最终会被定义为Java常量值，保存在R.java文件中，与其应用的其他源文件一起被编译到程序中，这样就可以在程序或者资源文件中通过这些ID常量来访问指定的资源。
 
 我们接下来再看应用程序资源的组织。应用程序资源的组织方式有18个维度，如图1所示：
+
 <div align="center">
 	<img src="/images/posts/Android apk打包过程/应用程序资源的组织方式.jng" height="536" width="572">  
 </div>
+
 这里有一点需要说明的是，表格中的18个维度是按照优先级从最大到小排列的，这个优先级次序可以帮助系统根据机器的本地配置来在应用程序资源目录中找到最合适的资源来使用。
+
 <div align="center">
 	<img src="/images/posts/Android apk打包过程/应用程序资源的匹配算法.png" height="461" width="361">  
 </div>
+
   注意，图2的算法流程图是来自于官方文档的，它的详细描述可以参考：http://developer.android.com/guide/topics/resources/providing-resources.html#BestMatch。我们同样是通过上述官方文档中的例子来说明上述应用程序资源匹配算法的执行过程。
    假设一个应用程序的drawable资源按照以下方式来组织：
 ```plain
@@ -191,8 +195,8 @@ private:
             android:gravity="center"  
             android:text="@string/start_in_new_process" >  
         </Button>  
-    </LinearLayout>  
-    ```
+    </LinearLayout>
+```
 Xml资源文件main.xml的编译过程如图8所示：
 
  <div align="center">
@@ -218,7 +222,7 @@ Xml资源文件main.xml的编译过程如图8所示：
   对Xml元素的属性的值进行解析。例如，对于对于main.xml文件的根节点LinearLayout来说，前面我们已经给它的属性android:orientation的名称赋予了一个资源ID，这里就要给它的值“vertical”进行解析。
   4. 压平Xml文件
  经过前面的三步操作之后，所需要的基本材料都已经准备好了，接下来就可以对Xml文件的内容进行扁平化处理了，实际上就是将Xml文件从文本格式转换为二进制格式
- 
+
   八. 生成资源符号
    这里生成资源符号为后面生成R.java文件做好准备的。从前面的操作可以知道，所有收集到的资源项都按照类型来保存在一个资源表中，即保存在一个ResourceTable对象。因此，Android资源打包工具aapt只要遍历每一个Package里面的每一个Type，然后取出每一个Entry的名称，并且根据这个Entry在自己的Type里面出现的次序来计算得到它的资源ID，那么就可以生成一个资源符号了，这个资源符号由名称以及资源ID所组成。
 
